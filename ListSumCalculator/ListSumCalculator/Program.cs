@@ -39,13 +39,21 @@ namespace ListSumCalculator
 
                             if (Int32.TryParse(numberInput, out numberInputAsInt))
                             {
-                                openList.Add(numberInputAsInt);
-                                isRunning = false;
-                            }
+                                if (!openList.Contains(numberInputAsInt))
+                                {
+                                    openList.Add(numberInputAsInt);
+                                    isRunning = false;
+                                }
 
-                            if (isMultipleOfThree(numberInputAsInt, isValid))
-                            {
-                                specificList.Add(numberInputAsInt);
+                                else if (openList.Contains(numberInputAsInt))
+                                {
+                                    Console.WriteLine("Please enter a different number.");
+                                }
+
+                                if (isMultipleOfThree(numberInputAsInt, isValid))
+                                {
+                                    specificList.Add(numberInputAsInt);
+                                }
                             }
 
                             else
@@ -60,6 +68,7 @@ namespace ListSumCalculator
                     Console.WriteLine("Please enter a valid number!");
                 }
 
+
                 if (openList.Count == numberAmountAsInt)
                 {
                     isFinished = true;
@@ -67,16 +76,14 @@ namespace ListSumCalculator
                 
             }
 
-            foreach (int number in specificList)
-            {
-                Console.WriteLine(number);
-            }
+            Console.WriteLine("The sum of all entered multiples of 3 is");
+            Console.WriteLine(specificList.Sum());
 
         }
 
         static bool isMultipleOfThree(int numberInputAsInt, bool isValid)
         {
-            double divisionValue = numberInputAsInt / 3;
+            double divisionValue = (double)numberInputAsInt / 3;
 
             if (divisionValue % 1 != 0)
             {
