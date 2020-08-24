@@ -11,15 +11,14 @@ namespace ListSumCalculator
     {
         static void Main(string[] args)
         {
-            bool isFinished = false;
+            var isFinished = false;
             string numberAmount;
             int numberAmountAsInt;
             string numberInput;
             int numberInputAsInt;
-            var specificList = new List<int>();
-            var openList = new List<int>();
-            bool isValid = true;
-            
+            var multipleList = new List<int>();
+            var inputCounter = 0;
+            var previousUserInput = 0;
 
             while (!isFinished)
             {
@@ -31,7 +30,7 @@ namespace ListSumCalculator
                     for (int i = 0; i < numberAmountAsInt; i++)
                     {
                         bool isRunning = true;
-                        
+
                         while (isRunning)
                         {
                             Console.WriteLine("Please enter a number!");
@@ -39,21 +38,23 @@ namespace ListSumCalculator
 
                             if (Int32.TryParse(numberInput, out numberInputAsInt))
                             {
-                                if (!openList.Contains(numberInputAsInt))
+                                if (numberInputAsInt != previousUserInput)
                                 {
-                                    openList.Add(numberInputAsInt);
+                                    inputCounter++;
                                     isRunning = false;
                                 }
 
-                                else if (openList.Contains(numberInputAsInt))
+                                else if (numberInputAsInt == previousUserInput)
                                 {
                                     Console.WriteLine("Please enter a different number.");
                                 }
 
-                                if (isMultipleOfThree(numberInputAsInt, isValid))
+                                if (IsMultipleOfThree(numberInputAsInt))
                                 {
-                                    specificList.Add(numberInputAsInt);
+                                    multipleList.Add(numberInputAsInt);
                                 }
+
+                                previousUserInput = numberInputAsInt;
                             }
 
                             else
@@ -68,33 +69,32 @@ namespace ListSumCalculator
                     Console.WriteLine("Please enter a valid number!");
                 }
 
-
-                if (openList.Count == numberAmountAsInt)
+                if (inputCounter == numberAmountAsInt && numberAmountAsInt != 0)
                 {
                     isFinished = true;
                 }
-                
+
             }
-
-            Console.WriteLine("The sum of all entered multiples of 3 is");
-            Console.WriteLine(specificList.Sum());
-
-        }
-
-        static bool isMultipleOfThree(int numberInputAsInt, bool isValid)
-        {
-            double divisionValue = (double)numberInputAsInt / 3;
-
-            if (divisionValue % 1 != 0)
+            if (multipleList.Count > 2)
             {
-                isValid = false;
+                Console.WriteLine("The sum of all entered multiples of 3 is");
+                Console.WriteLine(multipleList.Sum());
             }
             else
             {
-                isValid = true;
+                Console.WriteLine("There are not enough multiples of 3 for the calculator to work");
+                isFinished = true;
             }
 
-            return isValid;
+        }
+
+        private static bool IsMultipleOfThree(int numberInputAsInt)
+        {
+            if ((double)numberInputAsInt / 3 % 1 != 0)
+            {
+                return false;
+            }
+            return true;
         }
 
     }
